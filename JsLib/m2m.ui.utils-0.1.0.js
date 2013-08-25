@@ -1,5 +1,9 @@
+var Util = {};
+
 // utils.js
 (function($) {
+	exports
+
 	var core_version = "1.0.0",
 	// [[Class]] -> type pairs
 	class2type = {}, core_toString = class2type.toString, core_trim = core_version.trim, core_hasOwn = class2type.hasOwnProperty;
@@ -279,5 +283,4 @@
 						&& (length - 1) in obj);
 	}
 
-})(require('util'));
-
+})(Util);
