@@ -1,31 +1,32 @@
 // m2m.ui.core-0.1.0.js
 
-var m2m = {}, Utils = require('./m2m.ui.utils-0.1.0');
+var UI = {}, Utils = require('./m2m.ui.utils-0.1.0');
 
 // widget
 (function(exports, $) {
 
 	exports.Widget = Widget;
 
-	var _option = {
-		version : '0.1.0'
-	};
+	var _option = {}, _event = {}, _version = '0.1.0';
 
 	// m2m.ui 的子类
-	function Widget(options) {
+	function Widget(options, version) {
 		// 配置参数
 		this.settings = $.extend(_option, options || {});
+		this._version = version || _version;
 
 		// 事件注册
 		this.callbacks = {};
-		if(this.init){
-			this.init();
-			this.emit('init');
+		if (this._init) {
+			this._init();
 		}
 	}
 
 	// 添加方法
 	$.extend(Widget.prototype, {
+		getVersion : function() {
+			return this._version;
+		},
 		on : function(event, fn) {
 			(this.callbacks[event] = this.callbacks[event] || []).push(fn);
 			return this;
@@ -57,7 +58,7 @@ var m2m = {}, Utils = require('./m2m.ui.utils-0.1.0');
 			callbacks.splice(i, 1);
 			return this;
 		},
-		emit : function(event) {
+		_emit : function(event) {
 			var args = [].slice.call(arguments, 1), callbacks = this.callbacks[event];
 
 			if (callbacks) {
@@ -68,7 +69,8 @@ var m2m = {}, Utils = require('./m2m.ui.utils-0.1.0');
 
 			return this;
 		}
-
 	});
 
-})(m2m, Utils);
+})(UI, Utils);
+
+module.exports = UI;
