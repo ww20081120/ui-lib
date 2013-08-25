@@ -2,7 +2,11 @@ var Util = {};
 
 // utils.js
 (function($) {
+<<<<<<< HEAD:JsLib/m2m.ui.utils-2.0.1.js
 	var core_version = "2.0.1",
+=======
+	var core_version = "1.0.0",
+>>>>>>> d3864d420889e9c1a00b848d98468406ef391913:JsLib/m2m.ui.utils-0.1.0.js
 	// [[Class]] -> type pairs
 	class2type = {}, core_toString = class2type.toString, core_trim = core_version.trim, core_hasOwn = class2type.hasOwnProperty;
 

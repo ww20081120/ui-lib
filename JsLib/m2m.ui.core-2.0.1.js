@@ -1,14 +1,25 @@
 // m2m.ui.core-0.1.0.js
+<<<<<<< HEAD:JsLib/m2m.ui.core-2.0.1.js
 var UI = {}, Utils = require('./m2m.ui.utils-2.0.1');
+=======
+
+var UI = {}, Utils = require('./m2m.ui.utils-0.1.0');
+>>>>>>> d3864d420889e9c1a00b848d98468406ef391913:JsLib/m2m.ui.core-0.1.0.js
 
 // widget
 (function(exports, $) {
 
 	exports.Widget = Widget;
 
+<<<<<<< HEAD:JsLib/m2m.ui.core-2.0.1.js
 	var _option = {}, _event = {}, _version = '2.0.1';
 
 	// m2m.ui 的父类
+=======
+	var _option = {}, _event = {}, _version = '0.1.0';
+
+	// m2m.ui 的子类
+>>>>>>> d3864d420889e9c1a00b848d98468406ef391913:JsLib/m2m.ui.core-0.1.0.js
 	function Widget(options, version) {
 		// 配置参数
 		this.settings = $.extend(_option, options || {});
@@ -16,8 +27,14 @@ var UI = {}, Utils = require('./m2m.ui.utils-2.0.1');
 
 		// 事件注册
 		this.callbacks = {};
+<<<<<<< HEAD:JsLib/m2m.ui.core-2.0.1.js
 
 		this._call('_init');
+=======
+		if (this._init) {
+			this._init();
+		}
+>>>>>>> d3864d420889e9c1a00b848d98468406ef391913:JsLib/m2m.ui.core-0.1.0.js
 	}
 
 	// 添加方法
