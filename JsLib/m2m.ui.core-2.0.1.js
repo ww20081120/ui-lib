@@ -8,19 +8,19 @@ var UI = {}, Utils = require('./m2m.ui.utils-2.0.1');
 
 	var _option = {}, _event = {}, _version = '2.0.1';
 
-	// m2m.ui µÄ¸¸Àà
+	// m2m.ui çš„çˆ¶ç±»
 	function Widget(options, version) {
-		// ÅäÖÃ²ÎÊı
+		// é…ç½®å‚æ•°
 		this.settings = $.extend(_option, options || {});
 		this._version = version || _version;
 
-		// ÊÂ¼ş×¢²á
+		// äº‹ä»¶æ³¨å†Œ
 		this.callbacks = {};
 
 		this._call('_init');
 	}
 
-	// Ìí¼Ó·½·¨
+	// æ·»åŠ æ–¹æ³•
 	$.extend(Widget.prototype, {
 		getVersion : function() {
 			return this._version;

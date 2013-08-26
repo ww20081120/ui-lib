@@ -12,7 +12,7 @@
 		loadFailed : 'loadFailed'
 	}, _version = '0.1.0';
 
-	// ajax ×é¼þµÄ¸¸Àà
+	// ajax ç»„ä»¶çš„çˆ¶ç±»
 	function AjaxWidget(options) {
 		exports.Widget.call(this, options, _version);
 		$.extend(this.settings, _opt, options || {});
