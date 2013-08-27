@@ -2,10 +2,9 @@
 (function(exports, $, html) {
 	exports.Dialog = Dialog;
 
-	// title,content,model,display,closeable
+	// title,content,model,display,closeable,width,height
 	var _opt = {
 		title : 'Message Window',
-		display : true,
 		closeable : true,
 		buttonGroup : [{
 					clazz : 'btn btn-primary',
@@ -111,7 +110,8 @@
 		},
 		_render : function() {
 			var $el = this.$el, self = this, $header = $el
-					.find('.modal-header'), $body = $el.find('.modal-body'), $footer = $el
+					.find('.modal-header'), $content = $el
+					.find('.modal-content'), $body = $el.find('.modal-body'), $footer = $el
 					.find('.modal-footer');
 
 			$header.append($('<h4/>').addClass('modal-title')
@@ -120,6 +120,13 @@
 			self._closeAble($header)._modelAble();
 
 			$body.html(self.settings.content);
+
+			if (this.settings.width)
+				$content.width(this.settings.width);
+
+			if (this.settings.height)
+				$content.height(this.settings.height);
+
 			$el.appendTo('body');
 
 			if (this.settings.buttonGroup) {
@@ -135,4 +142,4 @@
 })(
 		UI,
 		jQuery,
-		'<div class="modal"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"></div><div class="modal-body">Hello world</div><div class="modal-footer"></div></div></div></div>');
+		'<div class="modal"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"></div><div class="modal-body"></div><div class="modal-footer"></div></div></div></div>');

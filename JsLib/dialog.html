@@ -3,16 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <title>Dialog</title>
-<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap.min.css" rel="stylesheet">
 <script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="js/m2m.ui.core-2.0.1.js"></script>
 <script type="text/javascript" src="js/m2m.ui.dialog-2.0.1.js"></script>
 <script type="text/javascript" src="js/m2m.ui.overlay-2.0.1.js"></script>
 <script type="text/javascript">
-	new UI.Dialog({
+	var dialog = new UI.Dialog({
+		title : 'Fuck you!'
+	});
+
+	var dialog2 = new UI.Dialog({
 		"content" : "大山啊，你好美",
 		display : true,
-		model : true
+		model : true,
+		width : 500
+	}).on('close', function() {
+		dialog.show();
 	});
 </script>
 </head>
