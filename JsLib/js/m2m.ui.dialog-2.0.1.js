@@ -79,7 +79,7 @@
 			return this;
 		},
 		_modelAble : function() {
-			if (this.settings.model) {
+			if (this.settings.model && exports.overlay) {
 				this._overlay = exports.overlay();
 				this.on(_event.hide, function() {
 							this._overlay.hide();
@@ -103,7 +103,7 @@
 					self.hide();
 				}
 			}
-			if (this.settings.model) {
+			if (this.settings.model && this._overlay) {
 				this._overlay.on('init', display);
 			} else {
 				display();
