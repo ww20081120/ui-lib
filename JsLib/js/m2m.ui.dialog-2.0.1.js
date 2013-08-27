@@ -15,7 +15,7 @@
 		show : 'show',
 		hide : 'hide',
 		close : 'close'
-	}, _version = '0.1.0',
+	}, _version = '2.0.1',
 	// clazz,attr,text,event,eventType
 	_btnOpt = {
 		eventType : 'click'
