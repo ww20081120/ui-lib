@@ -14,7 +14,7 @@ var UI = {};
 	// m2m.ui 的父类
 	function Widget(options, version) {
 		// 配置参数
-		this.settings = $.extend(_option, options || {});
+		this.settings = $.extend({}, _option, options || {});
 		this._version = version || _version;
 
 		// 事件注册
