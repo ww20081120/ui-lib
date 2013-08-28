@@ -94,14 +94,9 @@
 			this._template = html;
 			this.$el = $(this._template);
 			this._render();
-			var self = this;
-			function display() {
-				if (self.settings.display) {
-					self.show();
-				} else {
-					self.hide();
-				}
-			}
+			var display = $.proxy(function(){
+				return this[this.settings.display ? "show" : "hide"]();
+			},this);
 			if (this.settings.model && this._overlay) {
 				this._overlay.on('init', display);
 			} else {

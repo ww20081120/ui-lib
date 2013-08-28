@@ -19,10 +19,9 @@ var UI = {};
 
 		// 事件注册
 		this.callbacks = {};
-		var self = this;
-		$(function() {
-					self._call('_init', _event.init);
-				});
+		$($.proxy(function() {
+					this._call('_init', _event.init);
+				}, this));
 	}
 
 	// 添加方法
