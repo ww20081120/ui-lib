@@ -25,12 +25,9 @@
 					this.$el.remove();
 					this._destory();
 				},
-				_init : function(deffered) {
+				_init : function() {
 					this._template = html;
 					this.$el = $(this._template).appendTo('body');
-					if(deffered){
-						deffered.resolve();
-					}
 				}
 			});
 

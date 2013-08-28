@@ -12,16 +12,23 @@ var UI = {};
 	}, _version = '2.0.1';
 
 	// m2m.ui 的父类
-	function Widget(options, version) {
+	function Widget(options, version, deffered) {
 		// 配置参数
 		this.settings = $.extend({}, _option, options || {});
 		this._version = version || _version;
-		var args = [].slice.call(arguments, 2);
 		// 事件注册
 		this.callbacks = {};
 		$($.proxy(function() {
-					[].unshift.call(args, '_init', _event.init);
-					this._call.apply(this, args);
+					try {
+						this._call('_init', _event.init);
+						if (deffered) {
+							deffered.resolve()
+						}
+					} catch (e) {
+						if (deffered) {
+							deffered.reject(e);
+						}
+					}
 				}, this));
 	}
 
