@@ -3,13 +3,14 @@
 	exports.Overlay = Overlay;
 	
 	exports.overlay = function(options){
-  		return new Overlay(options);
+		var deferred = $.Deferred();
+  		return deferred.promise(new Overlay(options,deferred));
 	};
 	var _opt = {}, _event = {}, _version = '2.0.1';
 
 	// ajax 组件的父类
-	function Overlay(options) {
-		exports.Widget.call(this, options, _version);
+	function Overlay(options,deffered) {
+		exports.Widget.call(this, options, _version,deffered);
 		$.extend(this.settings, _opt, options || {});
 	}
 
@@ -24,9 +25,12 @@
 					this.$el.remove();
 					this._destory();
 				},
-				_init : function() {
+				_init : function(deffered) {
 					this._template = html;
 					this.$el = $(this._template).appendTo('body');
+					if(deffered){
+						deffered.resolve();
+					}
 				}
 			});
 

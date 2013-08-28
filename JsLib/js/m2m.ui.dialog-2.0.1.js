@@ -94,14 +94,12 @@
 			this._template = html;
 			this.$el = $(this._template);
 			this._render();
+			
+			// 当overlay初始化好以后触发display
 			var display = $.proxy(function() {
 						return this[this.settings.display ? "show" : "hide"]();
 					}, this);
-
-			this._when(this.settings.model && this._overlay ? {
-						target : this._overlay,
-						event : 'init'
-					} : null, display);
+			$.when(this._overlay).done(display);
 		},
 		_render : function() {
 			var $el = this.$el, self = this, $header = $el
