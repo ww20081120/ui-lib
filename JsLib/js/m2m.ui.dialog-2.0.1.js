@@ -94,14 +94,14 @@
 			this._template = html;
 			this.$el = $(this._template);
 			this._render();
-			var display = $.proxy(function(){
-				return this[this.settings.display ? "show" : "hide"]();
-			},this);
-			if (this.settings.model && this._overlay) {
-				this._overlay.on('init', display);
-			} else {
-				display();
-			}
+			var display = $.proxy(function() {
+						return this[this.settings.display ? "show" : "hide"]();
+					}, this);
+
+			this._when(this.settings.model && this._overlay ? {
+						target : this._overlay,
+						event : 'init'
+					} : null, display);
 		},
 		_render : function() {
 			var $el = this.$el, self = this, $header = $el

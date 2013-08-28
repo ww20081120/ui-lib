@@ -60,6 +60,32 @@ var UI = {};
 			callbacks.splice(i, 1);
 			return this;
 		},
+		_when : function(tarObj, fn) {
+			if (tarObj) {
+				var isReady = 0, fire = function(obj, index) {
+					if (!index) {
+						index = 0;
+					}
+					obj.target.once(obj.event, function() {
+								isReady -= index;
+								if (isReady == 0) {
+									fn();
+								}
+							})
+				};
+				if ($.isArray(tarObj)) {
+					for (var i = 0; i < tarObj.length; i++) {
+						isReady <<= 1;
+						isReady += 1;
+						fire(tarObj[i], 1 << i);
+					}
+				} else {
+					fire(tarObj);
+				}
+			} else {
+				fn();
+			}
+		},
 		_emit : function(event) {
 			var args = [].slice.call(arguments, 1), callbacks = this.callbacks[event];
 
