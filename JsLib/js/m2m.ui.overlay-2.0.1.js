@@ -3,14 +3,13 @@
 	exports.Overlay = Overlay;
 	
 	exports.overlay = function(options){
-		var deferred = $.Deferred();
-  		return deferred.promise(new Overlay(options,deferred));
+  		return new Overlay(options);
 	};
 	var _opt = {}, _event = {}, _version = '2.0.1';
 
 	// ajax 组件的父类
-	function Overlay(options,deffered) {
-		exports.Widget.call(this, options, _version,deffered);
+	function Overlay(options) {
+		exports.Widget.call(this, options, _version);
 		$.extend(this.settings, _opt, options || {});
 	}
 
