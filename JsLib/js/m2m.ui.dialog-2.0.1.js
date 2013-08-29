@@ -2,10 +2,11 @@
 (function(exports, $, html) {
 	exports.Dialog = Dialog;
 
-	// title,content,model,display,closeable,width,height
+	// title,content,display,closeable,effect,width,height
 	var _opt = {
 		title : 'Message Window',
 		closeable : true,
+		effect : true,
 		buttonGroup : [{
 					clazz : 'btn btn-primary',
 					text : 'Close'
@@ -43,11 +44,12 @@
 			return this.settings.display;
 		},
 		show : function() {
+			this._emit(_event.show);
 			this.settings.display = true;
 			this.$el.show();
-			this._emit(_event.show);
 		},
 		hide : function(ms) {
+			this._emit(_event.hide);
 			var self = this;
 			if (ms) {
 				setTimeout(function() {
@@ -57,11 +59,10 @@
 			}
 			this.settings.display = false;
 			this.$el.hide();
-			this._emit(_event.hide);
 		},
 		close : function() {
-			this.$el.remove();
 			this._emit(_event.close);
+			this.$el.remove();
 			this._destory();
 		},
 		_closeAble : function($header) {
@@ -78,7 +79,7 @@
 			return this;
 		},
 		_modelAble : function() {
-			if (this.settings.model && exports.overlay) {
+			if (exports.overlay) {
 				this._overlay = exports.overlay();
 				this.on(_event.hide, function() {
 							this._overlay.hide();
@@ -90,11 +91,21 @@
 			}
 			return this;
 		},
+		_effectAble : function($dialog) {
+			if (this.settings.effect) {
+				this.on(_event.show, function() {
+							$dialog.fadeIn('slow');
+						}).on(_event.hide, function() {
+							$dialog.fadeOut('slow');
+						});
+			}
+			return this;
+		},
 		_init : function() {
 			this._template = html;
 			this.$el = $(this._template);
 			this._render();
-			
+
 			// 当overlay初始化好以后触发display
 			var display = $.proxy(function() {
 						return this[this.settings.display ? "show" : "hide"]();
@@ -102,15 +113,15 @@
 			$.when(this._overlay).done(display);
 		},
 		_render : function() {
-			var $el = this.$el, self = this, $header = $el
+			var $el = this.$el.appendTo('body'), self = this, $header = $el
 					.find('.modal-header'), $content = $el
 					.find('.modal-content'), $body = $el.find('.modal-body'), $footer = $el
-					.find('.modal-footer');
+					.find('.modal-footer'), $dialog = $el.find('.modal-dialog');
 
 			$header.append($('<h4/>').addClass('modal-title')
 					.text(self.settings.title));
 
-			self._closeAble($header)._modelAble();
+			self._closeAble($header)._modelAble()._effectAble($dialog);
 
 			$body.html(self.settings.content);
 
@@ -119,8 +130,6 @@
 
 			if (this.settings.height)
 				$content.height(this.settings.height);
-
-			$el.appendTo('body');
 
 			if (this.settings.buttonGroup) {
 				$.each(this.settings.buttonGroup, function(index, btn) {

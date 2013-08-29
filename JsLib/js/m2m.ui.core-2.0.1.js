@@ -15,13 +15,13 @@ var UI = {};
 	function Widget(options, version) {
 		var deferred = $.Deferred();
 		deferred.promise(this);
-		
+
 		// 配置参数
 		this.settings = $.extend({}, _option, options || {});
 		this._version = version || _version;
 		// 事件注册
 		this.callbacks = {};
-		
+
 		$($.proxy(function() {
 					try {
 						this._call('_init', _event.init);
@@ -37,8 +37,12 @@ var UI = {};
 		getVersion : function() {
 			return this._version;
 		},
-		on : function(event, fn) {
-			(this.callbacks[event] = this.callbacks[event] || []).push(fn);
+		on : function(events, fn) {
+			events = events.split(" ");
+			for (var i = 0; i < events.length; i++) {
+				(this.callbacks[events[i]] = this.callbacks[events[i]] || [])
+						.push(fn);
+			}
 			return this;
 		},
 		once : function(event, fn) {
@@ -52,20 +56,23 @@ var UI = {};
 			this.on(event, on);
 			return this;
 		},
-		off : function(event, fn) {
-			var callbacks = this.callbacks[event];
-			if (!callbacks)
-				return this;
+		off : function(events, fn) {
+			events = events.split(" ");
+			for (var i = 0; i < events.length; i++) {
+				var callbacks = this.callbacks[events[i]];
+				if (!callbacks)
+					continue;
 
-			// remove all handlers
-			if (1 == arguments.length) {
-				delete this.callbacks[event];
-				return this;
+				// remove all handlers
+				if (1 == arguments.length) {
+					delete this.callbacks[events[i]];
+					continue;
+				}
+
+				// remove specific handler
+				var index = callbacks.indexOf(fn);
+				callbacks.splice(index, 1);
 			}
-
-			// remove specific handler
-			var i = callbacks.indexOf(fn);
-			callbacks.splice(i, 1);
 			return this;
 		},
 		_emit : function(event) {
