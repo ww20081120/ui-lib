@@ -2,39 +2,18 @@
 (function(exports, $, html) {
 	exports.Dialog = Dialog;
 
-	// title,content,display,closeable,effect,width,height
+	// content,remote,display,effect,width,height
 	var _opt = {
-		title : 'Message Window',
-		closeable : true,
-		effect : true,
-		buttonGroup : [{
-					clazz : 'btn btn-primary',
-					text : 'Close'
-				}]
+		effect : true
 	}, _event = {
 		show : 'show',
 		hide : 'hide',
 		close : 'close'
-	}, _version = '2.0.1',
-	// clazz,attr,text,event,eventType
-	_btnOpt = {
-		eventType : 'click'
-	}, _createBtn = function(opt) {
-		opt = $.extend(_btnOpt, opt || {})
-		var $btn = $('<button/>').text(opt.text).addClass(opt.clazz);
-		if (opt.event) {
-			$btn.on(opt.eventType, opt.event);
-		}
-		if (opt.attr) {
-			$.each(opt.attr, function(name, value) {
-						$btn.attr(name, value);
-					});
-		}
-		return $btn;
-	};
+	}, _version = '2.0.1';
 
 	// ajax 组件的父类
-	function Dialog(options) {
+	function Dialog(options, template) {
+		this.$element = $(template || html);
 		exports.Widget.call(this, options, _version);
 		$.extend(this.settings, _opt, options || {});
 	}
@@ -43,40 +22,40 @@
 		isDisplay : function() {
 			return this.settings.display;
 		},
-		show : function() {
-			this._emit(_event.show);
-			this.settings.display = true;
-			this.$el.show();
+		toggle : function() {
+			return this[!this.isDisplay() ? 'show' : 'hide']()
 		},
-		hide : function(ms) {
-			this._emit(_event.hide);
-			var self = this;
-			if (ms) {
-				setTimeout(function() {
-							self.hide();
-						}, ms);
+		show : function() {
+			if (this.settings.display)
 				return this;
-			}
+			this.settings.display = true;
+			this._emit(_event.show);
+
+			this.$element.on('click.dismiss.modal', '[data-dismiss="modal"]', $
+							.proxy(this.close, this));
+
+			if (!this.$element.parent().length)
+				this.$element.appendTo(document.body)
+
+			// 显示
+			this.$element.show().addClass('in').attr('aria-hidden', false);
+
+			return this;
+		},
+		hide : function() {
+			if (!this.settings.display)
+				return this;
 			this.settings.display = false;
-			this.$el.hide();
+			this._emit(_event.hide);
+
+			$(document).off('focusin.bs.modal');
+			this.$element.hide().removeClass('in').attr('aria-hidden', true)
+					.off('click.dismiss.modal');
 		},
 		close : function() {
 			this._emit(_event.close);
-			this.$el.remove();
+			this.$element.remove();
 			this._destory();
-		},
-		_closeAble : function($header) {
-			var self = this;
-			if (this.settings.closeable) {
-				$header.prepend(_createBtn({
-							clazz : 'close',
-							text : '×',
-							event : function() {
-								self.close();
-							}
-						}));
-			}
-			return this;
 		},
 		_modelAble : function() {
 			if (exports.overlay) {
@@ -94,54 +73,39 @@
 		_effectAble : function($dialog) {
 			if (this.settings.effect) {
 				this.on(_event.show, function() {
-							$dialog.fadeIn('slow');
+							$dialog.fadeIn();
 						}).on(_event.hide, function() {
-							$dialog.fadeOut('slow');
+							$dialog.fadeOut();
 						});
 			}
 			return this;
 		},
 		_init : function() {
-			this._template = html;
-			this.$el = $(this._template);
 			this._render();
 
 			// 当overlay初始化好以后触发display
-			var display = $.proxy(function() {
-						return this[this.settings.display ? "show" : "hide"]();
-					}, this);
-			$.when(this._overlay).done(display);
+			$.when(this._overlay).done($.proxy(function() {
+						this.settings.display = !this.settings.display;
+						this.toggle();
+					}, this));
 		},
 		_render : function() {
-			var $el = this.$el.appendTo('body'), self = this, $header = $el
-					.find('.modal-header'), $content = $el
-					.find('.modal-content'), $body = $el.find('.modal-body'), $footer = $el
-					.find('.modal-footer'), $dialog = $el.find('.modal-dialog');
+			var $element = this.$element, $title = $element
+					.find('.modal-title'), $body = $element.find('.modal-body');
 
-			$header.append($('<h4/>').addClass('modal-title')
-					.text(self.settings.title));
-
-			self._closeAble($header)._modelAble()._effectAble($dialog);
-
-			$body.html(self.settings.content);
-
-			if (this.settings.width)
-				$content.width(this.settings.width);
-
-			if (this.settings.height)
-				$content.height(this.settings.height);
-
-			if (this.settings.buttonGroup) {
-				$.each(this.settings.buttonGroup, function(index, btn) {
-							$footer.append(_createBtn(btn));
-						});
+			if (this.settings.title) {
+				$title.text(this.settings.title);
 			}
 
-			return this;
+			this.settings.remote ? $body.load(this.settings.remote) : $body
+					.append(this.settings.content);
+
+			return this._modelAble()
+					._effectAble($element.find('.modal-dialog'));
 		}
 	});
 
 })(
 		UI,
 		jQuery,
-		'<div class="modal"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"></div><div class="modal-body"></div><div class="modal-footer"></div></div></div></div>');
+		'<div class="modal fade"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">Modal Dialog</h4></div><div class="modal-body"></div><div class="modal-footer"><button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Close</button></div></div></div></div>');
