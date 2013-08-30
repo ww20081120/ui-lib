@@ -3,7 +3,6 @@ var UI = {};
 
 // widget
 (function(exports, $) {
-
 	exports.Widget = Widget;
 
 	var _option = {}, _event = {
@@ -46,13 +45,10 @@ var UI = {};
 			return this;
 		},
 		once : function(event, fn) {
-			var self = this;
-
-			function on() {
-				self.off(event, on);
-				fn.apply(this, arguments);
-			}
-
+			var on = $.proxy(function() {
+						this.off(event, on);
+						fn.apply(this, arguments);
+					}, this);
 			this.on(event, on);
 			return this;
 		},
@@ -77,13 +73,11 @@ var UI = {};
 		},
 		_emit : function(event) {
 			var args = [].slice.call(arguments, 1), callbacks = this.callbacks[event];
-
 			if (callbacks) {
 				for (var i = 0, len = callbacks.length; i < len; ++i) {
 					callbacks[i].apply(this, args);
 				}
 			}
-
 			return this;
 		},
 		_call : function(method, event) {
@@ -103,5 +97,4 @@ var UI = {};
 					});
 		}
 	});
-
 })(UI, jQuery);
