@@ -1,0 +1,112 @@
+@charset "utf-8";
+/* CSS Document */
+.country,.state,.city {
+	margin-bottom: 0px;
+	padding: 15px 10px 10px 10px;
+}
+
+.site_all {
+	background: #F4F4F4;
+	width: 338px;
+	border: 2px solid #8aa4d3;
+	position: absolute;
+	z-index: 9999px;
+}
+.site_all_bg{	
+	background: #F4F4F4;
+	margin-bottom:0px;
+}
+
+.statebg {
+	border-top: 1px dotted #BEBEBE;
+	border-bottom: 1px dotted #BEBEBE;
+	background: white;
+	padding: 15px 10px 10px 10px;
+}
+
+.selected {
+	background: #6488CC;
+	color: #FFFFFF;
+}
+
+.country a {
+	height: 16px;
+	margin: 0px;
+	display: inline-block;
+	padding: 2px 5px 2px 5px;
+	font-size: 12px;
+	font-family: Arial, Helvetica, sans-serif;
+	text-decoration: none;
+	border: 1px dotted #aaa;
+	margin: 2px;
+	cursor: pointer;
+}
+
+.state a {
+	height: 16px;
+	display: inline-block;
+	padding: 2px 5px 2px 5px;
+	font-size: 12px;
+	font-family: Arial, Helvetica, sans-serif;
+	text-decoration: none;
+	border: 1px dotted #BBB;
+	margin: 2px;
+	cursor: pointer;
+}
+
+.city a {
+	height: 16px;
+	margin: 0px;
+	display: inline-block;
+	padding: 2px 5px 2px 5px;
+	font-size: 12px;
+	font-family: Arial, Helvetica, sans-serif;
+	text-decoration: none;
+	border: 1px dotted #aaa;
+	margin: 2px;
+	cursor: pointer;
+}
+
+.site_tile {
+	font-size: 12px;
+	font-weight: bold;
+	color: #262628;
+	display: block;
+	padding-left: 4px;
+	padding-bottom: 10px;
+}
+
+.are_button a {
+	color: #fff;
+}
+
+.are_sure {
+	font-size: 12px;
+	font-weight: bold;
+	display: inline-block;
+	padding: 5px 8px 5px 8px;
+	color: white;
+	background: #365DA7;
+	margin-bottom: 10px;
+	margin-top: 5px;
+	cursor: pointer;
+}
+
+.are_sure a: {
+	color: #fff;
+}
+
+.are_sure a:link {
+	color: #fff;
+}
+
+.are_sure a:hover {
+	color: #fff;
+}
+
+.are_button {
+	margin-left: 12px;
+	margin-top:0px;
+	margin-bottom:0px;
+	margin-right:0px;
+}
